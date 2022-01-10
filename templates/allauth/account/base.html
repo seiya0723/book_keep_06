@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block head_title %}{% endblock %}</title>
+        <!--中央寄せ、フォーム系のタグは全てBootstrapから拝借-->
+        <link rel="stylesheet" href="{% static 'allauth/css/style.css' %}">
+        {% block extra_head %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="body_area">
+            <div class="body_area_inner">
+
+                {% block body %}
+
+                {% if messages %}
+                <div class="message_area">
+                    <strong>Messages:</strong>
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{message}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="menu_area">
+                    <strong>Menu:</strong>
+                    <ul>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'account_email' %}">メールアドレス変更</a></li>
+                        <li><a href="{% url 'account_logout' %}">ログアウト</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                        <li><a href="{% url 'account_signup' %}">ユーザー登録</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!--TODO:ここにログインフォーム等が表示される-->
+                {% block content %}
+                {% endblock %}
+
+                {% endblock %}
+
+                {% block extra_body %}
+                {% endblock %}
+
+            </div>
+        </div>
+    </body>
+</html>
+

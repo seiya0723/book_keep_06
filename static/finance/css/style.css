@@ -1,0 +1,284 @@
+body {
+    font-family: "Yu Gothic UI","ヒラギノ丸ゴ ProN W4";
+}
+/* top area */
+.logout {
+    position: absolute;
+    color: white;
+    font-size: 0.5rem;
+    margin-left: 1rem;
+}
+.header_area {
+    display:flex;
+    background:darkturquoise;
+}
+.header_link{
+    display:block;
+    width:3rem;
+    position:relative;
+}
+.header_link:hover i, .header_link:hover .logout {
+    color:crimson;
+}
+
+.header_link i {
+    color:white;
+    position:absolute;
+    font-size:2rem;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    margin-left: 0.5rem;
+}
+.header_title{
+    width:calc(100% - 3rem );
+    margin-left:2rem;
+}
+
+
+
+
+
+
+/* calender area */
+.form-row {
+    display: flex;
+    text-align: center;
+}
+.calender {
+    text-align:center;
+    font-size:1.5rem;
+    border:solid 0.2rem black;
+    border-radius: 2rem;
+    /* カレンダーを中央に配置。 */
+    margin:0.5rem auto 0;
+}
+.calender td{ 
+    padding:0.5rem;
+    border:solid 0.1rem black;
+}
+.calender td:nth-child(1) {
+    color:crimson;
+}
+.calender td:nth-child(7) {
+    color:royalblue;
+}
+.calender_head {
+    font-weight:bold;
+    border-bottom:double 0.2rem black;
+}
+.calender {
+    width:100%;
+}
+.calender td{ 
+    width:calc(100%/7);
+}
+
+.day_detail_mark{
+    display:none;
+}
+@media (max-width:800px){
+    .day_detail{
+        display:none;
+    }
+    .day_detail_mark{
+        display:block;
+        padding:0.5rem;
+        margin:0.5rem;
+    }
+}
+.year_month_select {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+.day_cell div:first-child {
+    text-align: left;
+    font-size: 1rem;
+}
+.day_cell div:nth-child(2) {
+    color: blue;
+}
+.day_cell div:last-child{
+    color: red;
+}
+.day_cell_small div:first-child {
+    background: blue;
+}
+.day_cell_small div:last-child {
+    background: red;
+}
+
+/* category form area */
+.category_form_area {
+    background:rgb(200, 255, 200);
+    padding:1rem;
+    margin:1rem 0;
+    border-radius:0.5rem;
+}
+
+
+/* income flag chkbox */
+.income_chk {
+    display:none;
+}
+.income_chk_label {
+    display:inline-block;
+    position:relative;
+    width:6rem;
+    height:2rem;
+    margin:0.25rem;
+    background:#444;
+    transition:0.2s;
+    cursor:pointer;
+}
+.income_chk_label:before {
+    content:"支出";
+    font-weight:bold;
+    color:white;
+    position:absolute;
+    top:0;
+    left:0;
+    width:50%;
+    height:100%;
+    background:crimson;
+    transition:0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input[type="checkbox"].income_chk:checked + label.income_chk_label:before{
+    content:"収入";
+    font-weight:bold;
+    left:50%;
+    background:forestgreen;
+}
+
+
+/*category view area*/
+.category_view_area {
+    background-color: rgb(233, 247, 107);
+    border-radius:0.5rem;
+    padding:1rem;
+    margin:1rem 0;
+}
+.category_table {
+    height: 8rem;
+    overflow: auto;
+}
+.category_th, .category_tb {
+    display: flex;
+    text-align: center;
+}
+.category_th {
+    font-weight: bold;
+    border-bottom: solid black 0.1rem;
+}
+.category_tb {
+    border-bottom:solid gray 0.1rem;
+    padding: 1rem 0;
+}
+.category_th div,.category_tb div {
+    width:calc(100%/3);
+}
+
+
+.category_content , .category_edit_form {
+    width(calc(100%*2/3));
+}
+
+.category_content {
+    display:flex;
+}
+.category_content_col {
+    width:50%;
+}
+
+
+
+
+/*
+.category_th div:first-child,.category_tb div:first-child {
+    width:40%;
+}
+.category_th div:nth-child(2),.category_tb div:nth-child(2) {
+    width:30%;
+}
+.category_th div:last-child,.category_tb div:last-child {
+    width:30%;
+}
+*/
+
+/* category edit area */
+.category_edit_chk {
+    display:none;
+}
+.category_edit_form{
+    display:none;
+}
+.category_edit_label{
+    padding:0.25rem;
+    border:solid 0.2rem orange;
+    border-radius:0.25rem;
+    cursor:pointer;
+}
+.category_edit_label i{
+    font-size:1.25rem;
+}
+input[type="checkbox"].category_edit_chk:checked ~ .category_edit_label{
+    background:orange;
+}
+input[type="checkbox"].category_edit_chk:checked ~ .category_edit_form{
+    display:block;
+}
+input[type="checkbox"].category_edit_chk:checked ~ .category_content{
+    display:none;
+}
+
+
+/* balance form area */
+.balance_form_area {
+    background:lavender;
+    padding:1rem;
+    margin:1rem 0;
+    border-radius:0.5rem;
+}
+
+
+
+/* tab system area */
+
+
+.tab_radio {
+    display:none;
+}
+.tab_area {
+    display:none;
+}
+.tab_label {
+    border:solid 0.15rem black;
+    padding:0 0.2rem;
+    background:white;
+    cursor:pointer;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+.tab_label:hover {
+    color:white;
+    background:black;
+}
+
+input[type="radio"].tab_radio:checked + .tab_label {
+    background:royalblue;
+    color:white;
+    padding:0 0.5rem;
+}
+
+input[type="radio"]#tab_radio_1:checked ~ #tab_area_1 { display:block; }
+input[type="radio"]#tab_radio_2:checked ~ #tab_area_2 { display:block; }
+input[type="radio"]#tab_radio_3:checked ~ #tab_area_3 { display:block; }
+input[type="radio"]#tab_radio_4:checked ~ #tab_area_4 { display:block; }
+input[type="radio"]#tab_radio_5:checked ~ #tab_area_5 { display:block; }
+input[type="radio"]#tab_radio_6:checked ~ #tab_area_6 { display:block; }
+
+.category_of_balances { 
+    flex-flow: column;
+}

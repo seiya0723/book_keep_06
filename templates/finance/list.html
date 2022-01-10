@@ -1,0 +1,220 @@
+{% load humanize %}
+<div class="category_form_area">
+    <h2>カテゴリ追加フォーム</h2>
+
+    <form action="{% url 'finance:category' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col"><input class="form-control category_name" type="text" name="name" placeholder="カテゴリ名"></div>
+            <div class="col"><input id="income_chk" class="income_chk" type="checkbox" name="income"><label class="income_chk_label" for="income_chk"></label></div>
+        </div>
+
+        <input class="btn btn-primary form-control" type="submit" value="送信">
+    </form>
+</div>
+
+<div class="category_view_area">
+    <h2>カテゴリ一覧</h2>
+
+
+    <!--ここは根こそぎ作り直したほうが良いかも知れない。-->
+    <!-- 平時は一覧を表示させ、編集ボタンを押した時、編集状態に仕立てる。下記HTMLにCSSを指定 -->
+
+    {% comment %}
+
+    <div class="category_list_area">
+        <div class="category_list_header">
+            <div class="category_list_header_content">カテゴリ名</div>
+            <div class="category_list_header_content">収支</div>
+            <div class="category_list_header_content">コントローラ</div>
+        </div>
+
+        {% for category in categories %}
+        <input id="category_chk_{{ category.id }}" type="checkbox">
+        <div class="category_list_view">
+            <div class="category_list_view_content">{{ category.name }}</div>
+            <div class="category_list_view_content">{{ category.income }}</div>
+            <div class="category_list_view_content">編集開始ボタン</div>
+        </div>
+        <form class="category_list_edit" action="" method="POST">
+            {% csrf_token %}
+            <div class="category_list_edit_content"><input type="text" name="name"></div>
+            <div class="category_list_edit_content"><input type="checkbox" name="income"></div>
+            <div class="category_list_edit_content">編集送信ボタン・編集キャンセルボタン</div>
+        </form>
+        {% endfor %}
+    
+    </div>
+    
+    {% endcomment %}
+
+
+
+    <div class="category_table">
+        <div class="category_th">
+            <div>カテゴリ名</div>
+            <div>収支</div>
+            <div>編集</div>
+        </div>
+        {% for category in categories %}
+        <div class="category_tb">
+            <input id="category_{{ category.id }}" class="category_edit_chk" type="checkbox">
+
+            <div class="category_content">
+                <div class="category_content_col">{{ category.name }}</div>
+                <div class="category_content_col">{% if category.income %}収入{% else %}支出{% endif %}</div>
+            </div>
+
+            <form class="category_edit_form" action="{% url 'finance:edit' category.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="name" value="{{ category.name }}">
+                <input id="category_chk_{{ category.id }}" class="income_chk" type="checkbox" name="income"><label class="income_chk_label" for="category_chk_{{ category.id }}"></label>
+                <input class="" type="submit" value="編集">
+            </form>
+
+            <div>
+                <label for="category_{{ category.id }}" class="category_edit_label"><i class="fas fa-edit"></i></label>
+            </div>
+        </div>
+        {% endfor %}
+
+
+        {% comment %}
+        {% for category in categories %}
+        <div class="category_tb">
+            <div>{{ category.name }}</div>
+            <div><input id="balance_chk" class="income_chk" type="checkbox" name="income" {% if category.income %}checked{% else %}{% endif %}>
+                 <label class="income_chk_label" for="balance_chk"></label>
+            </div>
+            <div>
+                <input id="{{ category.id }}" class="category_edit_chk" type="checkbox">
+                <form class="category_edit_form p-2" action="{% url 'finance:edit' category.id %}" method="POST">
+                    {% csrf_token %}
+                    <textarea class="form-control" name="comment">{{ category.name }}</textarea>
+                    <input class="form-control" type="submit" value="編集">
+                </form>
+                <label for="{{ category.id }}" class="category_edit_label"><i class="fas fa-edit"></i></label>
+            </div>
+        </div>
+        {% endfor %}
+        {% endcomment %}
+    </div> 
+</div>
+
+
+<div class="balance_form_area">
+    <h2>収支入力フォーム</h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <select class="form-control" name="category">
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}({% if category.income %}収入{% else %}支出{% endif %})</option>
+            {% endfor %}
+        </select>
+        <div class="form-row my-2">
+            <div class="col-sm-6">
+                <label>決済日</label>
+                <input class="form-control" type="text" name="pay_date" readonly placeholder="決済日を入力してください">
+            </div>
+            <div class="col-sm-6">
+                <label>金額</label>
+                <input class="form-control" type="number" name="value" value="0">
+            </div>
+        </div>
+        <input class="btn btn-primary form-control" type="submit" value="送信">
+    </form>
+</div>
+
+
+
+
+<input id="tab_radio_1" class="tab_radio" type="radio" name="tab_system" checked><label class="tab_label" for="tab_radio_1">一覧</label>
+<input id="tab_radio_2" class="tab_radio" type="radio" name="tab_system"><label class="tab_label" for="tab_radio_2">カテゴリ</label>
+<input id="tab_radio_3" class="tab_radio" type="radio" name="tab_system"><label class="tab_label" for="tab_radio_3">グラフ</label>
+
+<div id="tab_area_1" class="tab_area">
+    <table class="table table-striped table-bordered my-1">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center">登録日時</th>
+                <th class="text-center">決済日</th>
+                <th class="text-center">カテゴリ</th>
+                <th class="text-center">金額</th>
+                <th class="text-center">削除</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for balance in balances %}
+            <tr>
+                <td>{{ balance.dt }}</td>
+                <td>{{ balance.pay_date }}</td>
+                <td>{{ balance.category.name }}</td>
+                <td class="text-right">{{ balance.value|intcomma }}円</td>
+                <td>
+                    <form action="{% url 'finance:balance_delete' balance.id %}" method="POST" onsubmit="if(confirm('本当に削除しますか？')){ return true } else { return false };">
+                        {% csrf_token %}
+                        <input class="btn btn-outline-danger" type="submit" value="削除">
+                    </form>
+                
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div id="tab_area_2" class="tab_area">
+    <table class="table table-striped table-bordered my-1">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center">カテゴリ</th>
+                <th class="text-center">合計(月)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--カテゴリごとの集計結果-->
+            {% for c in category_of_balances %}
+            <tr>
+                <td class="{% if c.income %}income_{% else %}spending_{% endif %}category">{{ c.category }}</td>
+                <td class="{% if c.income %}income_{% else %}spending_{% endif %}total text-right">{{ c.total|intcomma }}円</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div id="tab_area_3" class="tab_area">
+
+
+    <div class="row">
+        <div style="position:relative;width:50%;">
+            <canvas id="category_graph_income"></canvas>
+        </div>
+        <div style="position:relative;width:50%;">
+            <canvas id="category_graph_spending"></canvas>
+        </div>
+    </div>
+
+    {% comment %}
+    <div class="row">
+        <div class="col">
+            <canvas id="category_graph_income"></canvas>
+        </div>
+        <div class="col">
+            <canvas id="category_graph_spending"></canvas>
+        </div>
+    </div>
+    {% endcomment %}
+    
+</div>
+
+
+
+{% for m in monthly_income %}
+<div>{{ m.date|date:"Y年n月" }} {{ m.amount }}円 {{ m.count }}回</div>
+{% endfor %}
+{% for m in monthly_spending %}
+<div>{{ m.date|date:"Y年n月" }} {{ m.amount }}円 {{ m.count }}回</div>
+{% endfor %}

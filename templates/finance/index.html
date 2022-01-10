@@ -1,0 +1,157 @@
+
+
+{% load static %}
+{% load humanize %}
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>家計簿</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!--日本語化用JS-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
+    <!--jQueryの読み込み-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!--chart.js CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+    <script src="{% static 'finance/js/chart.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'finance/css/style.css' %}">
+    <script src="{% static 'finance/js/script.js' %}"></script>
+
+</head>
+<body>
+    
+        
+
+    
+    <!--ここに家計簿のタイトルを-->
+    <header class="header_area">
+        <a class="header_link" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i><div class="logout">logout</div></a>
+        <h1 class="header_title" >家計簿アプリ</h1>
+    </header>
+   
+    <!--
+        Djangoメッセージフレームワーク
+        https://docs.djangoproject.com/en/3.2/ref/contrib/messages/#using-messages-in-views-and-templates
+    -->
+
+    {% for message in messages %}
+    <div class="message message_{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+
+
+    <div class="row mx-0">
+        <div class="col-md-6">{% include "finance/calender.html" %}</div>
+        <div class="col-md-6">{% include "finance/list.html" %}</div>
+    </div>
+
+    {% comment %}
+    <p>カテゴリ追加フォーム</p>
+    
+    <form action="{% url 'finance:category' %}" method="POST">
+        {% csrf_token %}
+        <div><input type="text" name="name" placeholder="カテゴリ名"></div>
+        <div>収入フラグ<input type="checkbox" name="income"></div>
+        <input type="submit" value="送信">
+    </form>
+
+    <p>収支入力フォーム</p>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="pay_date" readonly>
+        <input type="number" name="value" value="0">
+        <input type="submit" value="送信">
+    </form>
+
+    <table>
+        <tbody>
+            {% for balance in balances %}
+            <tr>
+                <td>{{ balance.dt }}</td>
+                <td>{{ balance.pay_date }}</td>
+                <td>{{ balance.category.name }}</td>
+                <td>{{ balance.value|intcomma }}円</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endcomment %}
+
+
+    {% comment %}
+
+    <!--カレンダー-->
+    <form action="" method="GET">
+        <select name="year">
+            <option value=""></option>
+        </select>
+        <select name="month">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+    </form>
+
+    <table class="calender">
+        <thead>
+            <tr class="calender_head">
+                <td>日</td>
+                <td>月</td>
+                <td>火</td>
+                <td>水</td>
+                <td>木</td>
+                <td>金</td>
+                <td>土</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week_date in month_date %}
+            <tr>
+                {% for day in week_date %}
+                <td>
+                    <div>{{ day.day }}</div>
+                    <div>{{ day.income|default:""|intcomma }}</div>
+                    <div>{{ day.spending|default:""|intcomma }}</div>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endcomment %}
+
+
+
+</body>
+</html>
